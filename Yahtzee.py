@@ -121,7 +121,9 @@ def realscores():
     print("Large Straight:", lgstrt_score)
     print("Yahtzee:", yahtzee_score)
     print("Chance:", chance_score)
-    
+
+# choices = string of dice chosen to reroll
+# returns 0 if invalid input, returns 1 if valid
 def reroll(choices):
     print(choices)
     if "A" in choices:
@@ -139,10 +141,15 @@ def reroll(choices):
     if "E" in choices:
         del dielist[4]
         dielist.insert(4, random.randint(1,6))
-    if choices == "":
+    if choices == "":   # blank string (no rerolls)
         return 1
-    elif "A" not in choices and "B" not in choices and "C" not in choices and "D" not in choices and "E" not in choices:
+    choices = choices.replace(" ","")   # leave only the letters left (no spaces)
+    if "A" not in choices and "B" not in choices and "C" not in choices and "D" not in choices and "E" not in choices:
         return 0
+    elif len(choices) > 3: # player cannot reroll more than 3 dice
+        return 0
+    else:
+        return 1
     
 def roll():
     x = 0
@@ -263,8 +270,8 @@ while slots < 13:
         print("""Position:  A B C D E""")
         print("   Value: ", dielist[0], dielist[1], dielist[2], dielist[3], dielist[4])
         a = reroll(input("Enter dice to re-roll: "))
-        if a == 0:
-            reroll(input("That is an invalid input, re-enter the dice you want to re-roll: "))
+        while a == 0:
+            a = reroll(input("That is an invalid input, re-enter the dice you want to re-roll: "))
         rolls += 1
     if rolls == 2:
         print("""Position:  A B C D E""")
